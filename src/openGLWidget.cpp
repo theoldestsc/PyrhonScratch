@@ -1,4 +1,5 @@
 #include "openGLWidget.h"
+#include "model.h"
 #include <QOpenGlContext>
 #include <QOpenGlFunctions>
 #include <QOpenGLShaderProgram>
@@ -10,15 +11,16 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
 
+
+
 void MyGLWidget::initializeGL()
 {
     connect(this, SIGNAL(frameSwapped()), this, SLOT(update()));
     auto functions = this->context()->functions();
     auto extraFunctions = this->context()->extraFunctions();
     this->installEventFilter(this);
-    camera = std::shared_ptr<Camera3D>(
-            new Camera3D({-3.5f, 3.0f, 3.0f}, 
-            {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f, 0.0f}));
+    camera = std::shared_ptr<Camera3D>(new Camera3D({-3.5f, 3.0f, 3.0f}, 
+                                       {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f, 0.0f}));
 
     currentShaderProgram = new QOpenGLShaderProgram;
     
@@ -37,56 +39,10 @@ void MyGLWidget::initializeGL()
     currentShaderProgram->addShader(&fragmentShader);
     currentShaderProgram->link();
 
-    std::vector<QVector3D> vertices{
-                    QVector3D(-0.5f, -0.5f, -0.5f),
-                    QVector3D(0.5f, -0.5f, -0.5f) ,
-                    QVector3D(0.5f, 0.5f, -0.5f) ,
-                    QVector3D(0.5f, 0.5f, -0.5f),
-                    QVector3D(-0.5f, 0.5f, -0.5f),
-                    QVector3D(-0.5f, -0.5f, -0.5f),
-                    QVector3D(-0.5f, -0.5f, 0.5f),
-                    QVector3D(0.5f, -0.5f, 0.5f),
-                    QVector3D(0.5f, 0.5f, 0.5f),
-                    QVector3D(0.5f, 0.5f, 0.5f),
-                    QVector3D(-0.5f, 0.5f, 0.5f),
-                    QVector3D(-0.5f, -0.5f, 0.5f),
-                    QVector3D(-0.5f, 0.5f, 0.5f),
-                    QVector3D(-0.5f, 0.5f, -0.5f),
-                    QVector3D(-0.5f, -0.5f, -0.5f),
-                    QVector3D(-0.5f, -0.5f, -0.5f),
-                    QVector3D(-0.5f, -0.5f, 0.5f),
-                    QVector3D(-0.5f, 0.5f, 0.5f),
-                    QVector3D(0.5f, 0.5f, 0.5f),
-                    QVector3D(0.5f, 0.5f, -0.5f),
-                    QVector3D(0.5f, -0.5f, -0.5f),
-                    QVector3D(0.5f, -0.5f, -0.5f),
-                    QVector3D(0.5f, -0.5f, 0.5f),
-                    QVector3D(0.5f, 0.5f, 0.5f),
-                    QVector3D(-0.5f, -0.5f, -0.5f), 
-                    QVector3D(0.5f, -0.5f, -0.5f), 
-                    QVector3D(0.5f, -0.5f, 0.5f), 
-                    QVector3D(0.5f, -0.5f, 0.5f), 
-                    QVector3D(-0.5f, -0.5f, 0.5f), 
-                    QVector3D(-0.5f, -0.5f, -0.5f), 
-                    QVector3D(-0.5f, 0.5f, -0.5f), 
-                    QVector3D(0.5f, 0.5f, -0.5f),
-                    QVector3D(0.5f, 0.5f, 0.5f),
-                    QVector3D(0.5f, 0.5f, 0.5f), 
-                    QVector3D(-0.5f, 0.5f, 0.5f), 
-                    QVector3D(-0.5f, 0.5f, -0.5f), 
-};
-
-    VAO = std::shared_ptr<QOpenGLVertexArrayObject>(new QOpenGLVertexArrayObject());
-    VAO->create();
-    VAO->bind();
-    VBO = std::shared_ptr<QOpenGLBuffer>(new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer));
-    VBO->create();
-    VBO->setUsagePattern(QOpenGLBuffer::StaticDraw);
-    VBO->bind();
-    VBO->allocate(vertices.data(), vertices.size() * sizeof(QVector3D));
-    functions->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(QVector3D),(void*)0);
-    functions->glEnableVertexAttribArray(0);
-
+    qDebug() << "Loading mesh";
+    model = new Model("C:\\Users\\andreyp\\Downloads\\backpack\\backpack.obj");
+    //model = new Model("C:\\Users\\andreyp\\Downloads\\R2D2Model\\R2D2Model.obj");
+    //model = new Model("D:\\OpenGL\\Scratch2.0\\shaders\\RobotMesh.obj");
 
 };
     
@@ -108,15 +64,13 @@ void MyGLWidget::paintGL()
     QMatrix4x4 projection;
     projection.perspective(45.0f, 800.0f / 600.0f, 0.1f, 100.0f);
     QMatrix4x4 translationMatrix;
-    translationMatrix.translate(QVector3D(0.5f, -0.5f, 0.0f));
+    //translationMatrix.translate(QVector3D(0.5f, -0.5f, 0.0f));
     
-    VAO->bind();
     currentShaderProgram->bind();
-    currentShaderProgram->setUniformValue("model", translationMatrix);
-    currentShaderProgram->setUniformValue("projection", projection);
-    currentShaderProgram->setUniformValue("view", camera->getViewMatrix());
-    
-    functions->glDrawArrays(GL_TRIANGLES, 0, 36);
+    currentShaderProgram->setUniformValue("ModelMatrix", translationMatrix);
+    currentShaderProgram->setUniformValue("ViewMatrix", camera->getViewMatrix());
+    currentShaderProgram->setUniformValue("ProjectionMatrix", projection);
+    model->Draw(currentShaderProgram);
     currentShaderProgram->release();
 };
 

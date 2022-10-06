@@ -1,11 +1,17 @@
-#version 450 core
-layout (location = 0) in vec3 aPos;
-out vec3 ourColor;
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
+#version 440
+
+layout (location = 0) in vec3 vertex_position;
+layout (location = 1) in vec3 vertex_normal;
+layout (location = 2) in vec2 vertex_texcoord;
+
+uniform mat4 ModelMatrix;
+uniform mat4 ViewMatrix;
+uniform mat4 ProjectionMatrix;
+
+out vec2 TexCoords;
 
 void main()
 {
-gl_Position = projection * view * model * vec4(aPos, 1.0);
+    TexCoords = vertex_texcoord;    
+    gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * vec4(vertex_position, 1.0);
 }

@@ -8,15 +8,18 @@ set(CMAKE_AUTORCC ON)
 find_package(Qt6 COMPONENTS Widgets REQUIRED)
 find_package(Qt6 COMPONENTS OpenGLWidgets REQUIRED)
 find_package(Boost REQUIRED)
-
+find_package(assimp REQUIRED)
 
 add_executable(main 
                src/main.cpp 
                src/openGLWidget.cpp
                src/camera.cpp
+               src/mesh.cpp
+               src/model.cpp
                resources.qrc)
 
 include_directories(${Boost_INCLUDE_DIR}
-                    ${QT6_INCLUDE_DIR})
-target_link_libraries(main ${Boost_LIB} Qt6::Widgets Qt6::OpenGLWidgets)
+                    ${QT6_INCLUDE_DIR}
+                    "D:\\MSYS\\mingw64\\include\\stb")
+target_link_libraries(main ${Boost_LIB} Qt6::Widgets Qt6::OpenGLWidgets assimp)
 
