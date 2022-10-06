@@ -13,6 +13,7 @@ find_package(Boost REQUIRED)
 add_executable(main 
                src/main.cpp 
                src/openGLWidget.cpp
+               src/camera.cpp
                resources.qrc)
 
 include_directories(${Boost_INCLUDE_DIR}
