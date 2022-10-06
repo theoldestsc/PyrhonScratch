@@ -1,0 +1,6 @@
+<!DOCTYPE RCC><RCC version="1.0">
+    <qresource>
+        <file>shaders/commonShader.vs</file>
+        <file>shaders/commonShader.fs</file>
+    </qresource>
+</RCC>
