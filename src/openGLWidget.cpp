@@ -7,7 +7,8 @@
 #include <QMatrix4x4>
 #include <QVector3D>
 #include <QKeyEvent>
-
+#include <QOpenGLBuffer>
+#include <QOpenGLVertexArrayObject>
 
 void MyGLWidget::initializeGL()
 {
@@ -36,56 +37,54 @@ void MyGLWidget::initializeGL()
     currentShaderProgram->addShader(&fragmentShader);
     currentShaderProgram->link();
 
-    float vertices[] = {
-                    -0.5f, -0.5f, -0.5f,
-                    0.5f, -0.5f, -0.5f,
-                    0.5f, 0.5f, -0.5f,
-                    0.5f, 0.5f, -0.5f,
-                    -0.5f, 0.5f, -0.5f,
-                    -0.5f, -0.5f, -0.5f,
-                    -0.5f, -0.5f, 0.5f,
-                    0.5f, -0.5f, 0.5f,
-                    0.5f, 0.5f, 0.5f,
-                    0.5f, 0.5f, 0.5f,
-                    -0.5f, 0.5f, 0.5f,
-                    -0.5f, -0.5f, 0.5f,
-                    -0.5f, 0.5f, 0.5f,
-                    -0.5f, 0.5f, -0.5f,
-                    -0.5f, -0.5f, -0.5f,
-                    -0.5f, -0.5f, -0.5f,
-                    -0.5f, -0.5f, 0.5f,
-                    -0.5f, 0.5f, 0.5f,
-                    0.5f, 0.5f, 0.5f,
-                    0.5f, 0.5f, -0.5f,
-                    0.5f, -0.5f, -0.5f,
-                    0.5f, -0.5f, -0.5f,
-                    0.5f, -0.5f, 0.5f,
-                    0.5f, 0.5f, 0.5f,
-                    -0.5f, -0.5f, -0.5f, 
-                    0.5f, -0.5f, -0.5f, 
-                    0.5f, -0.5f, 0.5f, 
-                    0.5f, -0.5f, 0.5f, 
-                    -0.5f, -0.5f, 0.5f, 
-                    -0.5f, -0.5f, -0.5f, 
-                    -0.5f, 0.5f, -0.5f, 
-                    0.5f, 0.5f, -0.5f,
-                    0.5f, 0.5f, 0.5f,
-                    0.5f, 0.5f, 0.5f, 
-                    -0.5f, 0.5f, 0.5f, 
-                    -0.5f, 0.5f, -0.5f, 
+    std::vector<QVector3D> vertices{
+                    QVector3D(-0.5f, -0.5f, -0.5f),
+                    QVector3D(0.5f, -0.5f, -0.5f) ,
+                    QVector3D(0.5f, 0.5f, -0.5f) ,
+                    QVector3D(0.5f, 0.5f, -0.5f),
+                    QVector3D(-0.5f, 0.5f, -0.5f),
+                    QVector3D(-0.5f, -0.5f, -0.5f),
+                    QVector3D(-0.5f, -0.5f, 0.5f),
+                    QVector3D(0.5f, -0.5f, 0.5f),
+                    QVector3D(0.5f, 0.5f, 0.5f),
+                    QVector3D(0.5f, 0.5f, 0.5f),
+                    QVector3D(-0.5f, 0.5f, 0.5f),
+                    QVector3D(-0.5f, -0.5f, 0.5f),
+                    QVector3D(-0.5f, 0.5f, 0.5f),
+                    QVector3D(-0.5f, 0.5f, -0.5f),
+                    QVector3D(-0.5f, -0.5f, -0.5f),
+                    QVector3D(-0.5f, -0.5f, -0.5f),
+                    QVector3D(-0.5f, -0.5f, 0.5f),
+                    QVector3D(-0.5f, 0.5f, 0.5f),
+                    QVector3D(0.5f, 0.5f, 0.5f),
+                    QVector3D(0.5f, 0.5f, -0.5f),
+                    QVector3D(0.5f, -0.5f, -0.5f),
+                    QVector3D(0.5f, -0.5f, -0.5f),
+                    QVector3D(0.5f, -0.5f, 0.5f),
+                    QVector3D(0.5f, 0.5f, 0.5f),
+                    QVector3D(-0.5f, -0.5f, -0.5f), 
+                    QVector3D(0.5f, -0.5f, -0.5f), 
+                    QVector3D(0.5f, -0.5f, 0.5f), 
+                    QVector3D(0.5f, -0.5f, 0.5f), 
+                    QVector3D(-0.5f, -0.5f, 0.5f), 
+                    QVector3D(-0.5f, -0.5f, -0.5f), 
+                    QVector3D(-0.5f, 0.5f, -0.5f), 
+                    QVector3D(0.5f, 0.5f, -0.5f),
+                    QVector3D(0.5f, 0.5f, 0.5f),
+                    QVector3D(0.5f, 0.5f, 0.5f), 
+                    QVector3D(-0.5f, 0.5f, 0.5f), 
+                    QVector3D(-0.5f, 0.5f, -0.5f), 
 };
 
-
-    unsigned int VBO;
-    extraFunctions->glGenVertexArrays(1, &VAO);
-    extraFunctions->glBindVertexArray(VAO);
-
-
-    functions->glGenBuffers(1, &VBO);
-    functions->glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    functions->glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    functions->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),(void*)0);
+    VAO = std::shared_ptr<QOpenGLVertexArrayObject>(new QOpenGLVertexArrayObject());
+    VAO->create();
+    VAO->bind();
+    VBO = std::shared_ptr<QOpenGLBuffer>(new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer));
+    VBO->create();
+    VBO->setUsagePattern(QOpenGLBuffer::StaticDraw);
+    VBO->bind();
+    VBO->allocate(vertices.data(), vertices.size() * sizeof(QVector3D));
+    functions->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(QVector3D),(void*)0);
     functions->glEnableVertexAttribArray(0);
 
 
@@ -111,11 +110,12 @@ void MyGLWidget::paintGL()
     QMatrix4x4 translationMatrix;
     translationMatrix.translate(QVector3D(0.5f, -0.5f, 0.0f));
     
+    VAO->bind();
     currentShaderProgram->bind();
     currentShaderProgram->setUniformValue("model", translationMatrix);
     currentShaderProgram->setUniformValue("projection", projection);
     currentShaderProgram->setUniformValue("view", camera->getViewMatrix());
-
+    
     functions->glDrawArrays(GL_TRIANGLES, 0, 36);
     currentShaderProgram->release();
 };

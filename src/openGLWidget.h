@@ -5,8 +5,11 @@
 #include <QOpenGLWidget>
 #include <QVector3D>
 
+class QOpenGLBuffer;
+class QOpenGLVertexArrayObject;
 class QOpenGLShaderProgram;
 class QKeyEvent;
+
 class MyGLWidget : public QOpenGLWidget
 {
 public:
@@ -14,7 +17,8 @@ public:
     ~MyGLWidget();
 private:
     QOpenGLShaderProgram* currentShaderProgram = nullptr;
-    unsigned int VAO;
+    std::shared_ptr<QOpenGLVertexArrayObject> VAO;
+    std::shared_ptr<QOpenGLBuffer> VBO;
     std::shared_ptr<Camera3D> camera;
     float lastX;
     float lastY;
