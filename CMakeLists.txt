@@ -19,7 +19,6 @@ add_executable(main
                resources.qrc)
 
 include_directories(${Boost_INCLUDE_DIR}
-                    ${QT6_INCLUDE_DIR}
-                    "D:\\MSYS\\mingw64\\include\\stb")
+                    ${QT6_INCLUDE_DIR})
 target_link_libraries(main ${Boost_LIB} Qt6::Widgets Qt6::OpenGLWidgets assimp)
 
