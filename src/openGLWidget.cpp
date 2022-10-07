@@ -30,7 +30,6 @@ void MyGLWidget::initializeGL()
                           this->geometry().width(),
                           this->geometry().height());
     functions->glEnable(GL_DEPTH_TEST);
-    functions->glEnable(GL_SCISSOR_TEST);
 
     QOpenGLShader vertexShader(QOpenGLShader::Vertex);
     vertexShader.compileSourceFile(":/shaders/commonShader.vs");
@@ -50,10 +49,7 @@ void MyGLWidget::initializeGL()
 void MyGLWidget::resizeGL(int w, int h)
 {    
     auto functions = this->context()->functions();
-    
-
     functions->glViewport(0, 0, w, h);
-    functions->glScissor(0, 0, w, h);
 };
 
 void MyGLWidget::paintGL()
