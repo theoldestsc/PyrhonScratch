@@ -30,6 +30,7 @@ void MyGLWidget::initializeGL()
                           this->geometry().width(),
                           this->geometry().height());
     functions->glEnable(GL_DEPTH_TEST);
+    functions->glEnable(GL_SCISSOR_TEST);
 
     QOpenGLShader vertexShader(QOpenGLShader::Vertex);
     vertexShader.compileSourceFile(":/shaders/commonShader.vs");
@@ -49,10 +50,10 @@ void MyGLWidget::initializeGL()
 void MyGLWidget::resizeGL(int w, int h)
 {    
     auto functions = this->context()->functions();
-    functions->glViewport(this->geometry().x(),
-                          this->geometry().y(),
-                          w,
-                          h);
+    
+
+    functions->glViewport(0, 0, w, h);
+    functions->glScissor(0, 0, w, h);
 };
 
 void MyGLWidget::paintGL()
@@ -62,9 +63,10 @@ void MyGLWidget::paintGL()
     functions->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     QMatrix4x4 projection;
-    projection.perspective(45.0f, 800.0f / 600.0f, 0.1f, 100.0f);
-    QMatrix4x4 translationMatrix;
-    //translationMatrix.translate(QVector3D(0.5f, -0.5f, 0.0f));
+    float aspectRatio = (float)this->width()/(float)this->height();
+    projection.perspective(45.0f, aspectRatio, 0.1f, 100.0f);
+    
+    translationMatrix.rotate(1.0f, QVector3D(0.0f,1.0f,0.0f));
     
     currentShaderProgram->bind();
     currentShaderProgram->setUniformValue("ModelMatrix", translationMatrix);

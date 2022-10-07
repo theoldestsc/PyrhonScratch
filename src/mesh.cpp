@@ -69,7 +69,7 @@ void Mesh::Draw(QOpenGLShaderProgram* shader)
         else if(name == "texture_specular")
             number = std::to_string(specularNr++);
         shader->setUniformValue((/*"material." +*/ name + number).c_str(), i);
-        functions->glBindTexture(GL_TEXTURE_2D, textures[i].id);
+        textures[i].texture->bind();
     }
     
     // draw mesh

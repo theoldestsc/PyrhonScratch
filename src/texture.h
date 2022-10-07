@@ -1,7 +1,8 @@
 #include <string>
+#include <QOpenGLTexture>
 
 struct Texture {
-    unsigned int id;
+    std::shared_ptr<QOpenGLTexture> texture;
     std::string type;
     std::string path;
 };

@@ -20,6 +20,7 @@ private:
     float lastX;
     float lastY;
     Model* model;
+    QMatrix4x4 translationMatrix;
 protected:
     void initializeGL() override;
     void resizeGL(int w, int h) override;
