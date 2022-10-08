@@ -1,5 +1,8 @@
-#ifndef WIDGET_H
-#define WIDGET_H
+#pragma once /*The differences are only in the 
+              different interpretation of the 
+              compilers of ancient time
+              */
+
 #include "camera.h"
 #include <QOpenGLWidget>
 
@@ -20,7 +23,6 @@ private:
     float lastX;
     float lastY;
     Model* model;
-    QMatrix4x4 translationMatrix;
 protected:
     void initializeGL() override;
     void resizeGL(int w, int h) override;
@@ -30,5 +32,3 @@ protected:
     void keyPressEvent(QKeyEvent *ev);
 
 };
-
-#endif // WIDGET_H

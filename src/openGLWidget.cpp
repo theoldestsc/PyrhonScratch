@@ -11,8 +11,6 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
 
-
-
 void MyGLWidget::initializeGL()
 {
     connect(this, SIGNAL(frameSwapped()), this, SLOT(update()));
@@ -41,8 +39,7 @@ void MyGLWidget::initializeGL()
 
     qDebug() << "Loading mesh";
     model = new Model("C:\\Users\\andreyp\\Downloads\\backpack\\backpack.obj");
-    //model = new Model("C:\\Users\\andreyp\\Downloads\\R2D2Model\\R2D2Model.obj");
-    //model = new Model("D:\\OpenGL\\Scratch2.0\\shaders\\RobotMesh.obj");
+    
 
 };
     
@@ -61,8 +58,8 @@ void MyGLWidget::paintGL()
     QMatrix4x4 projection;
     float aspectRatio = (float)this->width()/(float)this->height();
     projection.perspective(45.0f, aspectRatio, 0.1f, 100.0f);
-    
-    translationMatrix.rotate(1.0f, QVector3D(0.0f,1.0f,0.0f));
+    QMatrix4x4 translationMatrix;
+    translationMatrix.rotate(45.0f, QVector3D(0.0f,1.0f,0.0f));
     
     currentShaderProgram->bind();
     currentShaderProgram->setUniformValue("ModelMatrix", translationMatrix);

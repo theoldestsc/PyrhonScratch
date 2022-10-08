@@ -4,16 +4,19 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLBuffer>
+#include <QOpenGLShaderProgram>
 
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures)
+Mesh::Mesh(std::vector<Vertex> vertices, 
+           std::vector<unsigned int> indices, 
+           std::vector<Texture> textures)
 {
     this->vertices = vertices;
     this->indices = indices;
     this->textures = textures;
     setupMesh();
 
-    qDebug() << "Mesh loaded: " << "V: " << vertices.size() 
-    << " I: " << indices.size() << " Textures " << textures.size();
+    /*qDebug() << "Mesh loaded: " << "V: " << vertices.size() 
+    << " I: " << indices.size() << " Textures " << textures.size();*/
 }
 
 void Mesh::setupMesh()

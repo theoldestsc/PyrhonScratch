@@ -1,8 +1,10 @@
+#pragma once
+
 #include "vertex.h"
 #include "texture.h"
 #include <vector>
-#include <QOpenGLShaderProgram>
 
+class QOpenGLShaderProgram;
 class QOpenGLVertexArrayObject;
 class QOpenGLBuffer;
 
@@ -11,7 +13,9 @@ class Mesh {
         std::vector<Vertex> vertices;
         std::vector<unsigned int> indices;
         std::vector<Texture> textures;
-        Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
+        Mesh(std::vector<Vertex> vertices, 
+             std::vector<unsigned int> indices, 
+             std::vector<Texture> textures);
         void Draw(QOpenGLShaderProgram* shader);
     private:
         std::shared_ptr<QOpenGLVertexArrayObject> VAO;

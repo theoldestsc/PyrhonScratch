@@ -1,11 +1,11 @@
-#define STB_IMAGE_IMPLEMENTATION
 #include "model.h"
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
 #include <QOpenGLExtraFunctions>
-#include <iostream>
 #include <QOpenGLTexture>
 #include <QImage>
+#include <QOpenGLShaderProgram>
+#include <iostream>
 
 QOpenGLTexture* TextureFromFile(const char *path, const std::string &directory, bool gamma)
 {

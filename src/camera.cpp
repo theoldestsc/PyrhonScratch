@@ -1,7 +1,10 @@
 #include "camera.h"
 
-Camera3D::Camera3D(QVector3D position, QVector3D direction, QVector3D worldUp):
-position(position), front(direction), worldUp(worldUp)
+Camera3D::Camera3D(QVector3D position,
+                   QVector3D direction, 
+                   QVector3D worldUp):position(position), 
+                                      front(direction), 
+                                      worldUp(worldUp)
 {
     this->movementSpeed = 0.25f;
     this->sensitivity = 0.1f;
@@ -72,7 +75,9 @@ void Camera3D::move(const float& dt, const int direction)
     }
 }
 
-void Camera3D::updateMouseInput(const float& dt, const double& offsetX, const double& offsetY)
+void Camera3D::updateMouseInput(const float& dt, 
+                                const double& offsetX, 
+                                const double& offsetY)
 {
     //Update pitch yaw and roll
     this->pitch += static_cast<float>(offsetY) * this->sensitivity;
