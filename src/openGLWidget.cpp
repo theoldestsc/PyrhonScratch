@@ -18,7 +18,7 @@ void MyGLWidget::initializeGL()
     auto extraFunctions = this->context()->extraFunctions();
     this->installEventFilter(this);
     camera = std::shared_ptr<Camera3D>(new Camera3D({-3.5f, 3.0f, 3.0f}, 
-                                       {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f, 0.0f}));
+                                       {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}));
 
     currentShaderProgram = new QOpenGLShaderProgram;
     
@@ -38,7 +38,9 @@ void MyGLWidget::initializeGL()
     currentShaderProgram->link();
 
     qDebug() << "Loading mesh";
-    model = new Model("C:\\Users\\andreyp\\Downloads\\backpack\\backpack.obj");
+    //model = new Model("C:\\Users\\andreyp\\Downloads\\backpack\\backpack.obj");
+    //model = new Model("C:\\Users\\andreyp\\Downloads\\Animation Tutorial Download\\WorkingOBJ\\Character Running.obj");
+    model = new Model("C:\\Users\\andreyp\\Downloads\\Animation Tutorial Download\\modelCUBE2.dae");
     
 
 };

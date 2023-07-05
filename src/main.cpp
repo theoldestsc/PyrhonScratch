@@ -1,11 +1,11 @@
 
 #include "openGLWidget.h"
 #include <QApplication>
+#include <iostream>
 
 int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
-
     QSurfaceFormat format;
     format.setDepthBufferSize( 24 );
     format.setMajorVersion(4);
