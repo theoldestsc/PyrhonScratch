@@ -1,6 +1,6 @@
 #version 440
 out vec4 FragColor;
-flat in vec4 we;
+in vec4 we;
 in vec4 id;
 in vec3 interpolatedNormal;
 in vec2 TexCoords;

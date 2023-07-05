@@ -38,9 +38,7 @@ void MyGLWidget::initializeGL()
     currentShaderProgram->link();
 
     qDebug() << "Loading mesh";
-    //model = new Model("C:\\Users\\andreyp\\Downloads\\backpack\\backpack.obj");
-    //model = new Model("C:\\Users\\andreyp\\Downloads\\Animation Tutorial Download\\WorkingOBJ\\Character Running.obj");
-    model = new Model("C:\\Users\\andreyp\\Downloads\\Animation Tutorial Download\\modelCUBE2.dae");
+    model = new Model("..\\models\\modelCUBE.dae");
     
 
 };

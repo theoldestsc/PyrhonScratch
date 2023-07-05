@@ -128,7 +128,7 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
                 auto weightInfo = bone->mWeights[i];
                 auto vertexId = weightInfo.mVertexId;
                 auto weight = weightInfo.mWeight;
-                
+
                 for(int k = 0; k < WEIGHTS_PER_VERTEX; ++k)
                 {
                     if(vertices.at(vertexId).weight[k] == 0.0)
@@ -143,17 +143,6 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
         }
 
     }
-    //std::cout << std::endl;
-    //for(int a = 0; a < vertices.size(); ++a)
-    //{
-    //    std::cout << "vID: " << a << std::endl;
-    //    
-    //    std::cout << "\t[ " << vertices[a].weight[0]  << ", "
-    //    << vertices[a].weight[1]  << ", " 
-    //    << vertices[a].weight[2]  << ", "
-    //    << vertices[a].weight[3]  << " ]" << std::endl;
-    //    
-    //}
     qDebug() << vertices.size() << " " << mesh->mNumFaces << " Bones data: " << boneIndexMap.size() << " " << bones.size() << "\n";
     return Mesh(vertices, indices, textures, bones);
 }
